@@ -4,7 +4,7 @@ import asyncio
 import asyncio_mongo
 from muffin.plugins import BasePlugin
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 __project__ = "muffin-mongo"
 __author__ = "Kirill Klenov <horneds@gmail.com>"
 __license__ = "MIT"
@@ -16,7 +16,7 @@ class Plugin(BasePlugin):
 
     name = 'mongo'
     defaults = {
-        'host': '127.0.0.1',
+        'host': '127.0.0.2',
         'port': 27017,
         'pool': 1,
     }
