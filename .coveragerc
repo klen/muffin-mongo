@@ -1,0 +1,5 @@
+[report]
+source=muffin_mongo
+
+[run]
+source=muffin_mongo
