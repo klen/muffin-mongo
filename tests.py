@@ -1,8 +1,9 @@
-import pytest
-import muffin
-import mock
-import asyncio_mongo
 import asyncio
+
+import asyncio_mongo
+import mock
+import muffin
+import pytest
 
 
 @pytest.fixture(scope='session')
@@ -12,11 +13,10 @@ def app(loop):
 
         PLUGINS=['muffin_mongo'])
 
-    with mock.patch.object(asyncio_mongo.Connection, 'create') as create:
-        t = asyncio.Task(asyncio.coroutine(lambda: None)())
-        t.set_result(create)
-        create.return_value = t
-        loop.run_until_complete(app.start())
+    create = asyncio_mongo.Connection.create = mock.MagicMock()
+    t = asyncio.Task(asyncio.coroutine(lambda: None)())
+    t.set_result(create)
+    create.return_value = t
 
     return app
 
