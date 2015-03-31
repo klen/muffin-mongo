@@ -21,7 +21,7 @@ def app(loop):
     return app
 
 
-def test_muffin_session(app):
+def test_muffin_mongo(app):
     assert app.ps.mongo
     assert app.ps.mongo.conn
     assert app.ps.mongo.conn.called

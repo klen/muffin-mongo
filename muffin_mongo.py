@@ -44,3 +44,19 @@ class Plugin(BasePlugin):
                 host=self.options.host, port=self.options.port, loop=app._loop)
 
         return self
+
+    @asyncio.coroutine
+    def finish(self, app):
+        """ Close self connections. """
+        if isinstance(self.conn, asyncio_mongo.Pool):
+            for conn in self.conn._connections:
+                yield from conn.disconnect()
+        else:
+            yield from self.conn.disconnect()
+
+    def __getattr__(self, name):
+        """ Proxy attributes to self connection. """
+        if not self.conn:
+            raise AttributeError('Not connected')
+
+        return getattr(self.conn, name)
