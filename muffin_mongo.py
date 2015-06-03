@@ -4,7 +4,7 @@ import asyncio
 import asyncio_mongo
 from muffin.plugins import BasePlugin
 
-__version__ = "0.0.4"
+__version__ = "0.0.5"
 __project__ = "muffin-mongo"
 __author__ = "Kirill Klenov <horneds@gmail.com>"
 __license__ = "MIT"
