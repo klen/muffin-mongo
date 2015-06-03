@@ -16,8 +16,11 @@ class Plugin(BasePlugin):
 
     name = 'mongo'
     defaults = {
-        'host': '127.0.0.4',
+        'host': '127.0.0.1',
         'port': 27017,
+        'db': None,
+        'username': None,
+        'password': None,
         'pool': 1,
     }
 
@@ -37,11 +40,21 @@ class Plugin(BasePlugin):
         """ Make a connection to mongo. """
         if self.options.pool > 1:
             self.conn = yield from asyncio_mongo.Pool.create(
-                host=self.options.host, port=self.options.port, loop=app._loop,
+                host=self.options.host,
+                port=self.options.port,
+                db=self.options.db,
+                username=self.options.username,
+                password=self.options.password,
+                loop=app._loop,
                 poolsize=self.options.pool)
         else:
             self.conn = yield from asyncio_mongo.Connection.create(
-                host=self.options.host, port=self.options.port, loop=app._loop)
+                host=self.options.host,
+                port=self.options.port,
+                db=self.options.db,
+                username=self.options.username,
+                password=self.options.password,
+                loop=app._loop)
 
         return self
 
