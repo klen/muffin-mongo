@@ -32,28 +32,28 @@ class Plugin(BasePlugin):
     def setup(self, app):
         """ Setup options. """
         super().setup(app)
-        self.options.port = int(self.options.port)
-        self.options.pool = int(self.options.pool)
+        self.cfg.port = int(self.cfg.port)
+        self.cfg.pool = int(self.cfg.pool)
 
     @asyncio.coroutine
     def start(self, app):
         """ Make a connection to mongo. """
-        if self.options.pool > 1:
+        if self.cfg.pool > 1:
             self.conn = yield from asyncio_mongo.Pool.create(
-                host=self.options.host,
-                port=self.options.port,
-                db=self.options.db,
-                username=self.options.username,
-                password=self.options.password,
+                host=self.cfg.host,
+                port=self.cfg.port,
+                db=self.cfg.db,
+                username=self.cfg.username,
+                password=self.cfg.password,
                 loop=app._loop,
-                poolsize=self.options.pool)
+                poolsize=self.cfg.pool)
         else:
             self.conn = yield from asyncio_mongo.Connection.create(
-                host=self.options.host,
-                port=self.options.port,
-                db=self.options.db,
-                username=self.options.username,
-                password=self.options.password,
+                host=self.cfg.host,
+                port=self.cfg.port,
+                db=self.cfg.db,
+                username=self.cfg.username,
+                password=self.cfg.password,
                 loop=app._loop)
 
         return self
