@@ -1,4 +1,4 @@
-""" Monfo DB support for Muffin Framework. """
+"""MonfoDB support for Muffin Framework."""
 
 import asyncio
 import asyncio_mongo
@@ -12,7 +12,7 @@ __license__ = "MIT"
 
 class Plugin(BasePlugin):
 
-    """ Connect to Async Mongo. """
+    """Manage MongoDB connections."""
 
     name = 'mongo'
     defaults = {
@@ -25,19 +25,19 @@ class Plugin(BasePlugin):
     }
 
     def __init__(self, *args, **kwargs):
-        """ Initialize the plugin. """
+        """Initialize the plugin."""
         super().__init__(*args, **kwargs)
         self.conn = None
 
     def setup(self, app):
-        """ Setup options. """
+        """Setup options."""
         super().setup(app)
         self.cfg.port = int(self.cfg.port)
         self.cfg.pool = int(self.cfg.pool)
 
     @asyncio.coroutine
     def start(self, app):
-        """ Make a connection to mongo. """
+        """Make a connection to mongo."""
         if self.cfg.pool > 1:
             self.conn = yield from asyncio_mongo.Pool.create(
                 host=self.cfg.host,
@@ -45,7 +45,7 @@ class Plugin(BasePlugin):
                 db=self.cfg.db,
                 username=self.cfg.username,
                 password=self.cfg.password,
-                loop=app._loop,
+                loop=app.loop,
                 poolsize=self.cfg.pool)
         else:
             self.conn = yield from asyncio_mongo.Connection.create(
@@ -54,21 +54,21 @@ class Plugin(BasePlugin):
                 db=self.cfg.db,
                 username=self.cfg.username,
                 password=self.cfg.password,
-                loop=app._loop)
+                loop=app.loop)
 
         return self
 
     @asyncio.coroutine
     def finish(self, app):
-        """ Close self connections. """
+        """Close all opened connections."""
         if isinstance(self.conn, asyncio_mongo.Pool):
-            for conn in self.conn._connections:
+            for conn in self.conn._connections: # noqa
                 yield from conn.disconnect()
         else:
             yield from self.conn.disconnect()
 
     def __getattr__(self, name):
-        """ Proxy attributes to self connection. """
+        """Proxy attributes to self connection."""
         if not self.conn:
             raise AttributeError('Not connected')
 
