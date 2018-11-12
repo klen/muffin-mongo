@@ -55,12 +55,12 @@ Or install it manually like this: ::
 Appllication configuration options
 ----------------------------------
 
-``MONGO_HOST``       -- Connection IP address (127.0.0.1)
-``MONGO_PORT``       -- Connection port (27017)
-``MONGO_DB``         -- Connection database (None)
-``MONGO_USERNAME``   -- Connection username (None)
-``MONGO_PASSWORD``   -- Connection password (None)
-``MONGO_POOL``       -- Connection pool size (1)
+* ``MONGO_HOST``       -- Connection IP address (127.0.0.1)
+* ``MONGO_PORT``       -- Connection port (27017)
+* ``MONGO_DB``         -- Connection database (None)
+* ``MONGO_USERNAME``   -- Connection username (None)
+* ``MONGO_PASSWORD``   -- Connection password (None)
+* ``MONGO_POOL``       -- Connection pool size (1)
 
 Queries
 -------
@@ -69,7 +69,7 @@ Queries
 
     @app.register
     def view(request):
-        foo = app.mongo.foo  # foo database
+        foo = app.ps.mongo.foo  # foo database
         test = foo.test      # test collection
 
         # fetch some documents
