@@ -1,2 +1,0 @@
-muffin          >= 0.2.0
-asyncio_mongo   >= 0.2.4
