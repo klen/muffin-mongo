@@ -5,7 +5,7 @@ import typing as t
 from motor import motor_asyncio as motor
 from muffin.plugin import BasePlugin
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __project__ = "muffin-mongo"
 __author__ = "Kirill Klenov <horneds@gmail.com>"
 __license__ = "MIT"
