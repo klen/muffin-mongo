@@ -15,7 +15,7 @@ async def test_mongo(app, client):
     from muffin_mongo import Plugin as Mongo
 
     mongo = Mongo(app, database='tests')
-    assert not mongo.client
+    assert mongo.client
 
     @app.route('/')
     async def test(request):
@@ -23,8 +23,6 @@ async def test_mongo(app, client):
         pass
 
     async with client.lifespan():
-        assert mongo.client, 'Client must to be initialize after startup'
-
         # Get a collection
         assert isinstance(mongo.items, aiomotor.AsyncIOMotorCollection)
         assert mongo.items.database.name == 'tests'

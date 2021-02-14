@@ -2,6 +2,7 @@
 
 import typing as t
 
+from muffin import Application
 from motor import motor_asyncio as motor
 from muffin.plugin import BasePlugin
 
@@ -23,8 +24,13 @@ class Plugin(BasePlugin):
 
     def __init__(self, *args, **kwargs):
         """Initialize the plugin."""
-        super().__init__(*args, **kwargs)
         self.__client__ = None
+        super().__init__(*args, **kwargs)
+
+    def setup(self, app: Application, **options):
+        """Initialize a mongo client."""
+        super().setup(app, **options)
+        self.__client__ = motor.AsyncIOMotorClient(self.cfg.db_url)
 
     def __getattr__(self, name) -> t.Any:
         """Proxy methods to the motor client."""
@@ -33,10 +39,8 @@ class Plugin(BasePlugin):
             proxy = self.__client__[self.cfg.database]
         return getattr(proxy, name)
 
-    async def startup(self):
-        """Make a connection to mongo."""
-        self.__client__ = motor.AsyncIOMotorClient(self.cfg.db_url)
-
     @property
     def client(self):
+        """Proxy the client."""
+        assert self.__client__, 'Please setup plugin with an application.'
         return self.__client__
