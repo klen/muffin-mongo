@@ -76,8 +76,8 @@ That's it now you are able to use the plugin inside your views:
         return [str(key) for key in res.inserted_ids]
 
 
-Appllication configuration options
-----------------------------------
+Configuration options
+----------------------
 
 =========================== ======================================= =========================== 
 Name                        Default value                           Desctiption
@@ -85,6 +85,20 @@ Name                        Default value                           Desctiption
 **db_url**                  ``"mongodb://localhost:27017"``         A mongo connection URL
 **database**                ``None``                                A database name (optional)
 =========================== ======================================= =========================== 
+
+You are able to provide the options when you are initiliazing the plugin:
+
+.. code-block:: python
+
+    mongo.setup(app, db_url='mongodb://localhost:27017')
+
+Or setup it from ``Muffin.Application`` configuration using the ``MONGO_`` prefix:
+
+.. code-block:: python
+
+   MONGO_DB_URL = 'mongodb://localhost:27017'
+
+``Muffin.Application`` configuration options are case insensitive
 
 .. _bugtracker:
 
