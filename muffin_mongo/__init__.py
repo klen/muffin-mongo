@@ -6,7 +6,7 @@ from muffin import Application
 from motor import motor_asyncio as motor
 from muffin.plugin import BasePlugin
 
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 __project__ = "muffin-mongo"
 __author__ = "Kirill Klenov <horneds@gmail.com>"
 __license__ = "MIT"
