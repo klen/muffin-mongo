@@ -3,19 +3,17 @@ Muffin-Mongo
 
 .. _description:
 
-Muffin-Mongo -- MongoDB support for Muffin framework.
+Muffin-Mongo -- MongoDB support for Muffin_ framework.
 
 .. _badges:
 
-.. image:: http://img.shields.io/travis/klen/muffin-mongo.svg?style=flat-square
-    :target: http://travis-ci.org/klen/muffin-mongo
-    :alt: Build Status
+.. image:: https://github.com/klen/muffin-mongo/workflows/tests/badge.svg
+    :target: https://github.com/klen/muffin-mongo/actions
+    :alt: Tests Status
 
-.. image:: http://img.shields.io/pypi/v/muffin-mongo.svg?style=flat-square
-    :target: https://pypi.python.org/pypi/muffin-mongo
-
-.. image:: http://img.shields.io/pypi/dm/muffin-mongo.svg?style=flat-square
-    :target: https://pypi.python.org/pypi/muffin-mongo
+.. image:: https://img.shields.io/pypi/v/muffin-mongo
+    :target: https://pypi.org/project/muffin-mongo/
+    :alt: PYPI Version
 
 .. _contents:
 
@@ -26,7 +24,9 @@ Muffin-Mongo -- MongoDB support for Muffin framework.
 Requirements
 =============
 
-- python >= 3.3
+- python >= 3.7
+
+.. note:: The plugin supports only asyncio evenloop (not trio)
 
 .. _installation:
 
@@ -42,39 +42,49 @@ Installation
 Usage
 =====
 
-Add `muffin_mongo` to `PLUGINS` in your Muffin Application configuration.
+Setup the plugin and connect it into your app:
 
-Or install it manually like this: ::
+.. code-block:: python
 
-    mongo = muffin_mongo.Plugin(**{'options': 'here'})
+    from muffin import Application
+    from muffin_mongo import Plugin as Mongo
 
-    app = muffin.Application('test')
-    app.install(mongo)
+    # Create Muffin Application
+    app = Application('example')
+
+    # Initialize the plugin
+    # As alternative: db = DB(app, **options)
+    mongo = Mongo(db_url='mongodb://localhost:27017', database='db_name')
+    mongo.setup(app)
+
+
+That's it now you are able to use the plugin inside your views:
+
+.. code-block:: python
+
+    @app.route('/items', methods=['GET'])
+    async def get_items(request):
+        """Return a JSON with items from the database."""
+        documents = await mongo.items.find().sort('key').to_list(100)
+        return [dict(dd.items(), _id=str(dd['_id'])) for dd in documents]
+
+    @app.route('/items', methods=['POST'])
+    async def insert_item(request):
+        """Store items from JSON into database. Return ids."""
+        data = await request.data()  # parse formdata/json from the request
+        res = await mongo.items.insert_many(data)
+        return [str(key) for key in res.inserted_ids]
 
 
 Appllication configuration options
 ----------------------------------
 
-* ``MONGO_HOST``       -- Connection IP address (127.0.0.1)
-* ``MONGO_PORT``       -- Connection port (27017)
-* ``MONGO_DB``         -- Connection database (None)
-* ``MONGO_USERNAME``   -- Connection username (None)
-* ``MONGO_PASSWORD``   -- Connection password (None)
-* ``MONGO_POOL``       -- Connection pool size (1)
-
-Queries
--------
-
-::
-
-    @app.register
-    def view(request):
-        foo = app.ps.mongo.foo  # foo database
-        test = foo.test      # test collection
-
-        # fetch some documents
-        docs = yield from test.find(limit=10)
-        return list(docs)
+=========================== ======================================= =========================== 
+Name                        Default value                           Desctiption
+--------------------------- --------------------------------------- ---------------------------
+**db_url**                  ``"mongodb://localhost:27017"``         A mongo connection URL
+**database**                ``None``                                A database name (optional)
+=========================== ======================================= =========================== 
 
 .. _bugtracker:
 
@@ -101,20 +111,13 @@ Contributors
 .. _license:
 
 License
-=======
+========
 
 Licensed under a `MIT license`_.
 
 .. _links:
 
-If you wish to express your appreciation for the project, you are welcome to send
-a postcard to: ::
-
-    Kirill Klenov
-    pos. Severny 8-3
-    MO, Istra, 143500
-    Russia
-
 
 .. _klen: https://github.com/klen
+.. _Muffin: https://github.com/klen/muffin
 .. _MIT license: http://opensource.org/licenses/MIT
