@@ -6,11 +6,15 @@ from motor import motor_asyncio as aiomotor
 
 
 @pytest.fixture
+def aiolib():
+    return 'asyncio'
+
+
+@pytest.fixture
 def app():
     return muffin.Application('example', debug=True)
 
 
-@pytest.mark.asyncio
 async def test_mongo(app, client):
     from muffin_mongo import Plugin as Mongo
 
@@ -58,7 +62,6 @@ async def test_mongo(app, client):
         assert res3['key'] == 'value2'
 
 
-@pytest.mark.asyncio
 async def test_readme(app, client):
     from muffin_mongo import Plugin as Mongo
 
