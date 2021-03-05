@@ -12,7 +12,7 @@ def aiolib():
 
 @pytest.fixture
 def app():
-    return muffin.Application('example', debug=True)
+    return muffin.Application(debug=True)
 
 
 async def test_mongo(app, client):
