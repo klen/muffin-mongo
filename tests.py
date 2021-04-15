@@ -21,11 +21,6 @@ async def test_mongo(app, client):
     mongo = Mongo(app, database='tests')
     assert mongo.client
 
-    @app.route('/')
-    async def test(request):
-        breakpoint()
-        pass
-
     async with client.lifespan():
         # Get a collection
         assert isinstance(mongo.items, aiomotor.AsyncIOMotorCollection)
