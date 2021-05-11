@@ -4,7 +4,7 @@ import typing as t
 
 from muffin import Application
 from motor import motor_asyncio as motor
-from muffin.plugin import BasePlugin
+from muffin.plugins import BasePlugin
 
 __version__ = "0.3.3"
 __project__ = "muffin-mongo"
