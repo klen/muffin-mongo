@@ -15,6 +15,10 @@ Muffin-Mongo -- MongoDB support for Muffin_ framework.
     :target: https://pypi.org/project/muffin-mongo/
     :alt: PYPI Version
 
+.. image:: https://img.shields.io/pypi/pyversions/muffin-mongo
+    :target: https://pypi.org/project/muffin-mongo/
+    :alt: Python Versions
+
 .. _contents:
 
 .. contents::
