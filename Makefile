@@ -1,4 +1,4 @@
-VIRTUAL_ENV ?= env
+VIRTUAL_ENV ?= .venv
 
 all: $(VIRTUAL_ENV)
 
@@ -23,7 +23,8 @@ clean:
 VERSION?=minor
 # target: release - Bump version
 release: $(VIRTUAL_ENV)
-	@$(VIRTUAL_ENV)/bin/bumpversion $(VERSION)
+	@$(VIRTUAL_ENV)/bin/pip install bumpversion
+	@$(VIRTUAL_ENV)/bin/bump2version $(VERSION)
 	@git checkout master
 	@git merge develop
 	@git checkout develop
