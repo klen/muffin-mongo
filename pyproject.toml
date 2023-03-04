@@ -1,0 +1,78 @@
+[project]
+name = "muffin-mongo"
+version = "0.4.1"
+description = "MongoDB support for Muffin framework."
+readme = "README.rst"
+requires-python = ">=3.8"
+license = {"text" = "MIT License"}
+authors = [{ name = "Kirill Klenov", email = "horneds@gmail.com" }]
+keywords = ["mongodb", "muffin", "asyncio", "asgi", "web"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Framework :: AsyncIO",
+]
+dependencies = [
+  "muffin >= 0.92",
+  "motor >= 2.5.1",
+]
+
+[project.urls]
+homepage = "https://github.com/klen/muffin-mongo"
+repository = "https://github.com/klen/muffin-mongo"
+
+[project.optional-dependencies]
+tests = [
+  "pytest",
+  "pytest-aio[curio,trio]",
+  "pytest-mypy",
+  "ruff",
+]
+dev = ["pre-commit", "refurb", "bump2version"]
+
+[tool.setuptools]
+packages = ['muffin_mongo']
+
+[tool.setuptools.package-data]
+muffin_mongo = ["py.typed"]
+
+[tool.pytest.ini_options]
+addopts = "-xsv"
+log_cli = true
+
+[tool.mypy]
+packages = ["muffin_mongo"]
+install_types = true
+non_interactive = true
+ignore_missing_imports = true
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py38,py39,py310,py311,pypy39
+
+[testenv]
+deps = -e .[tests]
+commands =
+	pytest --mypy tests.py
+
+[testenv:pypy39]
+deps = -e .[tests]
+commands =
+	pytest tests.py
+"""
+
+[tool.ruff]
+fix = true
+line-length = 100
+target-version = "py38"
+exclude = [".venv", "docs", "examples"]
+select = ["ALL"]
+ignore = ["D", "UP", "ANN", "DJ", "EM", "RSE", "SLF", "RET", "S101", "PLR2004", "PLR0912", "N804", "A003", "TRY003"]
