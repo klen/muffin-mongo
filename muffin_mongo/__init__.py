@@ -9,7 +9,7 @@ from muffin.plugins import BasePlugin
 if TYPE_CHECKING:
     from muffin import Application
 
-__version__ = "0.4.1"
+__version__ = "0.5.0"
 __project__ = "muffin-mongo"
 __author__ = "Kirill Klenov <horneds@gmail.com>"
 __license__ = "MIT"
