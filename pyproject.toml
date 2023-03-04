@@ -1,6 +1,6 @@
 [project]
 name = "muffin-mongo"
-version = "0.4.1"
+version = "0.5.0"
 description = "MongoDB support for Muffin framework."
 readme = "README.rst"
 requires-python = ">=3.8"
