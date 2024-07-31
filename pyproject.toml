@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "muffin-mongo"
-version = "0.6.0"
+version = "0.6.1"
 description = "MongoDB support for Muffin framework."
 readme = "README.rst"
 license = "MIT"
