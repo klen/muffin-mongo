@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.9', '3.10', '3.11', '3.12']
 
     services:
       mongo:
@@ -26,29 +26,24 @@ jobs:
 
     steps:
 
-    - name: Checkout changes
-      uses: actions/checkout@main
-
-    # - name: Start MongoDB
-    #   uses: supercharge/mongodb-github-action@main
+    - uses: actions/checkout@main
+    - name: install poetry
+      run: pipx install poetry
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@main
       with:
-        cache: pip
+        cache: poetry
         python-version: ${{ matrix.python-version }}
 
-    - name: Install dependencies
-      run: |
-        python -m pip install .[tests]
+    - name: Install requirements
+      run: poetry install --with tests
 
     - name: Check code
-      run: |
-        ruff muffin_mongo
+      run: poetry run ruff check muffin_mongo
 
     - name: Test with pytest
-      run: |
-        pytest tests.py
+      run: poetry run pytest
 
   notify:
     runs-on: ubuntu-latest

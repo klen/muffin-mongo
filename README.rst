@@ -28,7 +28,7 @@ Muffin-Mongo -- MongoDB support for Muffin_ framework.
 Requirements
 =============
 
-- python >= 3.7
+- python >= 3.9
 
 .. note:: The plugin supports only asyncio evenloop (not trio)
 
@@ -83,12 +83,12 @@ That's it now you are able to use the plugin inside your views:
 Configuration options
 ----------------------
 
-=========================== ======================================= =========================== 
+=========================== ======================================= ===========================
 Name                        Default value                           Desctiption
 --------------------------- --------------------------------------- ---------------------------
 **db_url**                  ``"mongodb://localhost:27017"``         A mongo connection URL
 **database**                ``None``                                A database name (optional)
-=========================== ======================================= =========================== 
+=========================== ======================================= ===========================
 
 You are able to provide the options when you are initiliazing the plugin:
 

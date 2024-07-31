@@ -1,11 +1,10 @@
-[project]
+[tool.poetry]
 name = "muffin-mongo"
 version = "0.5.1"
 description = "MongoDB support for Muffin framework."
 readme = "README.rst"
-requires-python = ">=3.8"
-license = {"text" = "MIT License"}
-authors = [{ name = "Kirill Klenov", email = "horneds@gmail.com" }]
+license = "MIT"
+authors = ["Kirill Klenov <horneds@gmail.com>"]
 keywords = ["mongodb", "muffin", "asyncio", "asgi", "web"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
@@ -13,38 +12,31 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Framework :: AsyncIO",
 ]
-dependencies = [
-  "muffin >= 0.92",
-  "motor >= 2.5.1",
-]
-
-[project.urls]
 homepage = "https://github.com/klen/muffin-mongo"
 repository = "https://github.com/klen/muffin-mongo"
 
-[project.optional-dependencies]
-tests = [
-  "pytest",
-  "pytest-aio[curio,trio]",
-  "pytest-mypy",
-  "ruff",
-]
-dev = ["pre-commit", "refurb", "bump2version"]
+[tool.poetry.dependencies]
+python = "^3.9"
+muffin = "^0"
+motor = "*"
 
-[tool.setuptools]
-packages = ['muffin_mongo']
+[tool.poetry.group.tests.dependencies]
+ruff = "*"
+pytest = "*"
+pytest-mypy = "*"
+pytest-aio = { version = "*", extras = ["curio", "trio"] }
 
-[tool.setuptools.package-data]
-muffin_mongo = ["py.typed"]
+[tool.poetry.group.dev.dependencies]
+pre-commit = "*"
 
 [tool.pytest.ini_options]
-addopts = "-xsv"
+addopts = "-xsv tests.py"
 log_cli = true
 
 [tool.mypy]
@@ -56,7 +48,7 @@ ignore_missing_imports = true
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py38,py39,py310,py311,pypy39
+envlist = ppy39,py310,py311,py312,pypy39
 
 [testenv]
 deps = -e .[tests]
@@ -72,7 +64,24 @@ commands =
 [tool.ruff]
 fix = true
 line-length = 100
-target-version = "py38"
+target-version = "py39"
 exclude = [".venv", "docs", "examples"]
+
+[tool.ruff.lint]
 select = ["ALL"]
-ignore = ["D", "UP", "ANN", "DJ", "EM", "RSE", "SLF", "RET", "S101", "PLR2004", "PLR0912", "N804", "A003", "TRY003"]
+ignore = [
+  "D",
+  "UP",
+  "ANN",
+  "DJ",
+  "EM",
+  "RSE",
+  "SLF",
+  "RET",
+  "S101",
+  "PLR2004",
+  "PLR0912",
+  "N804",
+  "A003",
+  "TRY003",
+]
