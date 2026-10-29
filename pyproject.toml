@@ -1,10 +1,11 @@
-[tool.poetry]
+[project]
 name = "muffin-mongo"
 version = "0.6.1"
 description = "MongoDB support for Muffin framework."
+authors = [{ name = "Kirill Klenov", email = "horneds@gmail.com" }]
+requires-python = ">=3.11,<4"
 readme = "README.rst"
 license = "MIT"
-authors = ["Kirill Klenov <horneds@gmail.com>"]
 keywords = ["mongodb", "muffin", "asyncio", "asgi", "web"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
@@ -12,76 +13,101 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Framework :: AsyncIO",
 ]
-homepage = "https://github.com/klen/muffin-mongo"
-repository = "https://github.com/klen/muffin-mongo"
+dependencies = [
+  "motor",
+  "muffin",
+]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-muffin = "^0"
-motor = "*"
+[project.urls]
+Homepage = "https://github.com/klen/muffin-mongo"
+Repository = "https://github.com/klen/muffin-mongo"
 
-[tool.poetry.group.tests.dependencies]
-ruff = "*"
-pytest = "*"
-pytest-mypy = "*"
-pytest-aio = { version = "*", extras = ["curio", "trio"] }
+[dependency-groups]
+dev = [
+  "pytest",
+  "pytest-aio[curio, trio]",
+  "ruff",
+  "pyrefly",
+  "pre-commit",
+  "tox",
+]
 
-[tool.poetry.group.dev.dependencies]
-pre-commit = "*"
+[tool.uv]
+default-groups = ["dev"]
+
+[build-system]
+requires = ["uv_build>=0.9.7,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "muffin_mongo"
+module-root = ""
 
 [tool.pytest.ini_options]
 addopts = "-xsv tests.py"
 log_cli = true
 
-[tool.mypy]
-packages = ["muffin_mongo"]
-install_types = true
-non_interactive = true
-ignore_missing_imports = true
+[tool.pyrefly]
+project-includes = ["muffin_mongo"]
+project-excludes = ["tests.py", "setup.py", "pyproject.toml"]
 
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = ppy39,py310,py311,py312,pypy39
+envlist = py311,py312,py313,py314,py315,pypy311
 
 [testenv]
-deps = -e .[tests]
+allowlist_externals = uv,pytest
 commands =
-	pytest --mypy tests.py
-
-[testenv:pypy39]
-deps = -e .[tests]
-commands =
+  uv pip install --system -e . --group dev
 	pytest tests.py
 """
 
 [tool.ruff]
-fix = true
 line-length = 100
-target-version = "py39"
+target-version = "py311"
 exclude = [".venv", "docs", "examples"]
 
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-  "D",
-  "UP",
+  "A003",
   "ANN",
+  "ARG",
+  "COM",
+  "CPY001",
+  "D",
   "DJ",
   "EM",
-  "RSE",
-  "SLF",
-  "RET",
-  "S101",
-  "PLR2004",
+  "FA100",
+  "FIX",
+  "N",
+  "PLC0415",
   "PLR0912",
-  "N804",
-  "A003",
+  "PLR2004",
+  "RET",
+  "RSE",
+  "RUF012",
+  "S101",
+  "SLF",
+  "TD",
   "TRY003",
+  "UP",
 ]
+
+[tool.bumpversion]
+current_version = "0.6.1"
+commit = false
+tag = false
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'

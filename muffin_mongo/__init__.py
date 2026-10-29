@@ -1,4 +1,5 @@
 """MonfoDB support for Muffin Framework."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, ClassVar, Optional
@@ -11,7 +12,6 @@ if TYPE_CHECKING:
 
 
 class Plugin(BasePlugin):
-
     """Manage Motor Client."""
 
     name = "mongo"
@@ -25,10 +25,11 @@ class Plugin(BasePlugin):
         self.__client__: Optional[motor.AsyncIOMotorClient] = None
         super().__init__(*args, **kwargs)
 
-    def setup(self, app: Application, **options):
+    def setup(self, app: Application, *, name: str | None = None, **options) -> bool:
         """Initialize a mongo client."""
-        super().setup(app, **options)
+        enabled = super().setup(app, name=name, **options)
         self.__client__ = motor.AsyncIOMotorClient(self.cfg.db_url)
+        return enabled
 
     def __getattr__(self, name):
         """Proxy methods to the motor client."""
