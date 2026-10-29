@@ -43,7 +43,7 @@ dev = [
 default-groups = ["dev"]
 
 [build-system]
-requires = ["uv_build>=0.9.7,<0.10.0"]
+requires = ["uv_build>=0.13.6,<0.14.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -64,10 +64,14 @@ legacy_tox_ini = """
 envlist = py311,py312,py313,py314,py315,pypy311
 
 [testenv]
-allowlist_externals = uv,pytest
+allowlist_externals = uv,pytest,docker
+setenv =
+  UV_PROJECT_ENVIRONMENT = {envdir}
 commands =
-  uv pip install --system -e . --group dev
-	pytest tests.py
+  uv sync --locked --all-extras
+  docker start mongo
+  pytest tests.py
+  - docker stop mongo
 """
 
 [tool.ruff]
